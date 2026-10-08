@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Registration Form</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f4f7;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .description {
+            text-align: center;
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #bbb;
+            border-radius: 5px;
+            font-size: 15px;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+
+        .checkbox-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .checkbox-item input {
+            width: auto;
+        }
+
+        .error {
+            display: block;
+            color: #dc2626;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .success {
+            display: none;
+            background-color: #dcfce7;
+            color: #166534;
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        button {
+            width: 100%;
+            padding: 13px;
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #1d4ed8;
+        }
+
+        .password-info {
+            font-size: 13px;
+            color: #666;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Student Registration Form</h1>
+
+    <p class="description">
+        Please complete all required fields.
+    </p>
+
+    <!-- Success message -->
+    <div id="successMessage" class="success">
+        Registration successful! All fields have passed validation.
+    </div>
+
+    <form id="registrationForm" method="POST">
+
+        <!-- Full Name -->
+        <div class="form-group">
+            <label for="fullname">Full Name</label>
+
+            <input
+                type="text"
+                id="fullname"
+                name="fullname"
+                placeholder="Enter your full name"
+                required
+            >
+
+            <span class="error" id="fullnameError"></span>
+        </div>
+
+
+        <!-- Email -->
+        <div class="form-group">
+            <label for="email">Email Address</label>
+
+            <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="example@email.com"
+                required
+            >
+
+            <span class="error" id="emailError"></span>
+        </div>
+
+
+        <!-- Phone -->
+        <div class="form-group">
+            <label for="phone">Phone Number</label>
+
+            <input
+                type="tel"
+                id="phone"
+                name="phone"
+                placeholder="07XXXXXXXX"
+                required
+            >
+
+            <span class="error" id="phoneError"></span>
+        </div>
+
+
+        <!-- Date of Birth -->
+        <div class="form-group">
+            <label for="dob">Date of Birth</label>
+
+            <input
+                type="date"
+                id="dob"
+                name="dob"
+                required
+            >
+
+            <span class="error" id="dobError"></span>
+        </div>
+
+
+        <!-- Gender -->
+        <div class="form-group">
+            <label for="gender">Gender</label>
+
+            <select id="gender" name="gender" required>
+                <option value="">-- Select Gender --</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+            </select>
+
+            <span class="error" id="genderError"></span>
+        </div>
+
+
+        <!-- Course -->
+        <div class="form-group">
+            <label for="course">Course</label>
+
+            <select id="course" name="course" required>
+                <option value="">-- Select Course --</option>
+                <option value="Computer Science">Computer Science</option>
+                <option value="Information Technology">
+                    Information Technology
+                </option>
+                <option value="Software Engineering">
+                    Software Engineering
+                </option>
+                <option value="Business Computing">
+                    Business Computing
+                </option>
+            </select>
+
+            <span class="error" id="courseError"></span>
+        </div>
+
+
+        <!-- Address -->
+        <div class="form-group">
+            <label for="address">Address</label>
+
+            <textarea
+                id="address"
+                name="address"
+                rows="3"
+                placeholder="Enter your address"
+                required
+            ></textarea>
+
+            <span class="error" id="addressError"></span>
+        </div>
+
+
+        <!-- Username -->
+        <div class="form-group">
+            <label for="username">Username</label>
+
+            <input
+                type="text"
+                id="username"
+                name="username"
+                placeholder="Choose a username"
+                minlength="4"
+                required
+            >
+
+            <span class="error" id="usernameError"></span>
+        </div>
+
+
+        <!-- Password -->
+        <div class="form-group">
+            <label for="password">Password</label>
+
+            <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Create a password"
+                minlength="8"
+                required
+            >
+
+            <p class="password-info">
+                Password must contain at least 8 characters,
+                one uppercase letter, one lowercase letter and one number.
+            </p>
+
+            <span class="error" id="passwordError"></span>
+        </div>
+
+
+        <!-- Confirm Password -->
+        <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+
+            <input
+                type="password"
+                id="confirmPassword"
+                name="confirmPassword"
+                placeholder="Re-enter your password"
+                required
+            >
+
+            <span class="error" id="confirmPasswordError"></span>
+        </div>
+
+
+        <!-- Checkboxes -->
+        <div class="form-group">
+
+            <label>Select at least TWO interests:</label>
+
+            <div class="checkbox-group">
+
+                <label class="checkbox-item">
+                    <input
+                        type="checkbox"
+                        name="interests"
+                        value="Programming"
+                    >
+                    Programming
+                </label>
+
+                <label class="checkbox-item">
+                    <input
+                        type="checkbox"
+                        name="interests"
+                        value="Networking"
+                    >
+                    Networking
+                </label>
+
+                <label class="checkbox-item">
+                    <input
+                        type="checkbox"
+                        name="interests"
+                        value="Cybersecurity"
+                    >
+                    Cybersecurity
+                </label>
+
+                <label class="checkbox-item">
+                    <input
+                        type="checkbox"
+                        name="interests"
+                        value="Cloud Computing"
+                    >
+                    Cloud Computing
+                </label>
+
+            </div>
+
+            <span class="error" id="interestsError"></span>
+
+        </div>
+
+
+        <!-- Submit -->
+        <button type="submit">
+            Register
+        </button>
+
+    </form>
+
+</div>
+
+
+<script>
+
+    // Get the form
+    const form = document.getElementById("registrationForm");
+
+    // Get fields
+    const fullname = document.getElementById("fullname");
+    const email = document.getElementById("email");
+    const phone = document.getElementById("phone");
+    const dob = document.getElementById("dob");
+    const gender = document.getElementById("gender");
+    const course = document.getElementById("course");
+    const address = document.getElementById("address");
+    const username = document.getElementById("username");
+    const password = document.getElementById("password");
+    const confirmPassword =
+        document.getElementById("confirmPassword");
+
+    const successMessage =
+        document.getElementById("successMessage");
+
+
+    // Function to display an error
+    function showError(field, message) {
+
+        document.getElementById(field.id + "Error").textContent = message;
+
+    }
+
+
+    // Function to clear an error
+    function clearError(field) {
+
+        document.getElementById(field.id + "Error").textContent = "";
+
+    }
+
+
+    // Clear errors when user starts correcting a field
+    const fields = [
+        fullname,
+        email,
+        phone,
+        dob,
+        gender,
+        course,
+        address,
+        username,
+        password,
+        confirmPassword
+    ];
+
+    fields.forEach(function(field) {
+
+        field.addEventListener("input", function() {
+            clearError(field);
+        });
+
+        field.addEventListener("change", function() {
+            clearError(field);
+        });
+
+    });
+
+
+    // Form submission
+    form.addEventListener("submit", function(event) {
+
+        let valid = true;
+
+        successMessage.style.display = "none";
+
+
+        // Clear previous errors
+        fields.forEach(function(field) {
+            clearError(field);
+        });
+
+        document.getElementById("interestsError").textContent = "";
+
+
+        // -----------------------------
+        // FULL NAME VALIDATION
+        // -----------------------------
+
+        if (fullname.value.trim() === "") {
+
+            showError(fullname, "Please enter your full name.");
+
+            if (valid) {
+                fullname.focus();
+            }
+
+            valid = false;
+        }
+
+
+        // -----------------------------
+        // EMAIL VALIDATION
+        // -----------------------------
+
+        if (email.value.trim() === "") {
+
+            showError(email, "Please enter your email address.");
+
+            if (valid) {
+                email.focus();
+            }
+
+            valid = false;
+
+        } else if (!email.checkValidity()) {
+
+            showError(email, "Please enter a valid email address.");
+
+            if (valid) {
+                email.focus();
+            }
+
+            valid = false;
+        }
+
+
+        // -----------------------------
+        // PHONE VALIDATION
+        // -----------------------------
+
+        const phonePattern = /^07[0-9]{8}$/;
+
+        if (phone.value.trim() === "") {
+
+            showError(phone, "Please enter your phone number.");
+
+            if (valid) {
+                phone.focus();
+            }
+
+            valid = false;
+
+        } else if (!phonePattern.test(phone.value.trim())) {
+
+            showError(
+                phone,
+                "Enter a valid Ugandan phone number, e.g. 0701234567."
+            );
+
+            if (valid) {
+                phone.focus();
+            }
+
+            valid = false;
+        }
+
+
+        // -----------------------------
+        // DATE OF BIRTH
+        // -----------------------------
+
+        if (dob.value === "") {
+
+            showError(dob, "Please select your date of birth.");
+
+            if (valid) {
+                dob.focus();
+            }
+
+            valid = false;
+        }
+
+
+        // -----------------------------
+        // GENDER
+        // -----------------------------
+
+        if (gender.value === "") {
+
+            showError(gender, "Please select your gender.");
+
+            if (valid) {
+                gender.focus();
+            }
+
+            valid = false;
+        }
+
+
+        // -----------------------------
+        // COURSE
+        // -----------------------------
+
+        if (course.value === "") {
+
+            showError(course, "Please select your course.");
+
+            if (valid) {
+                course.focus();
+            }
+
+            valid = false;
+        }
+
+
+        // -----------------------------
+        // ADDRESS
+        // -----------------------------
+
+        if (address.value.trim() === "") {
+
+            showError(address, "Please enter your address.");
+
+            if (valid) {
+                address.focus();
+            }
+
+            valid = false;
+        }
+
+
+        // -----------------------------
+        // USERNAME
+        // -----------------------------
+
+        if (username.value.trim() === "") {
+
+            showError(username, "Please enter a username.");
+
+            if (valid) {
+                username.focus();
+            }
+
+            valid = false;
+
+        } else if (username.value.trim().length < 4) {
+
+            showError(
+                username,
+                "Username must contain at least 4 characters."
+            );
+
+            if (valid) {
+                username.focus();
+            }
+
+            valid = false;
+        }
+
+
+        // -----------------------------
+        // PASSWORD STRENGTH
+        // -----------------------------
+
+        const passwordPattern =
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+
+        if (password.value === "") {
+
+            showError(password, "Please enter a password.");
+
+            if (valid) {
+                password.focus();
+            }
+
+            valid = false;
+
+        } else if (!passwordPattern.test(password.value)) {
+
+            showError(
+                password,
+                "Password must have 8+ characters, uppercase, lowercase and a number."
+            );
+
+            if (valid) {
+                password.focus();
+            }
+
+            valid = false;
+        }
+
+
+        // -----------------------------
+        // CONFIRM PASSWORD
+        // -----------------------------
+
+        if (confirmPassword.value === "") {
+
+            showError(
+                confirmPassword,
+                "Please confirm your password."
+            );
+
+            if (valid) {
+                confirmPassword.focus();
+            }
+
+            valid = false;
+
+        } else if (password.value !== confirmPassword.value) {
+
+            showError(
+                confirmPassword,
+                "Passwords do not match."
+            );
+
+            if (valid) {
+                confirmPassword.focus();
+            }
+
+            valid = false;
+        }
+
+
+        // -----------------------------
+        // CHECKBOX VALIDATION
+        // -----------------------------
+
+        const checkboxes =
+            document.querySelectorAll(
+                'input[name="interests"]:checked'
+            );
+
+        if (checkboxes.length < 2) {
+
+            document.getElementById("interestsError").textContent =
+                "Please select at least two interests.";
+
+            if (valid) {
+                document.querySelector(
+                    'input[name="interests"]'
+                ).focus();
+            }
+
+            valid = false;
+        }
+
+
+        // -----------------------------
+        // FINAL RESULT
+        // -----------------------------
+
+        if (!valid) {
+
+            // Stop the form from being submitted
+            event.preventDefault();
+
+            return;
+        }
+
+
+        // Everything is valid
+        successMessage.style.display = "block";
+
+        /*
+         * The form is allowed to submit because we
+         * do NOT call event.preventDefault() here.
+         *
+         * This allows you to inspect the submitted
+         * information in the browser Network panel.
+         */
+
+    });
+
+</script>
+
+</body>
+</html>

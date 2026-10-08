@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration Form - 15 Fields</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 25px;
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #444;
+            font-size: 0.95em;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="password"],
+        input[type="number"],
+        input[type="date"],
+        input[type="url"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+        input:focus, select:focus, textarea:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        .radio-group, .checkbox-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 5px;
+            flex-wrap: wrap;
+        }
+        .radio-group label, .checkbox-group label {
+            font-weight: normal;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+        .error-message {
+            color: #d9534f;
+            font-size: 0.85em;
+            margin-top: 5px;
+            display: none; 
+            font-weight: 500;
+        }
+        .error-border {
+            border-color: #d9534f !important;
+            background-color: #fff8f8;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        
+        /* Results Display Styles */
+        #resultsContainer {
+            display: none; 
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 25px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        #resultsContainer h3 {
+            color: #28a745;
+            margin-top: 0;
+            text-align: center;
+            border-bottom: 2px solid #28a745;
+            padding-bottom: 10px;
+        }
+        .result-item {
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed #ced4da;
+            display: flex;
+            justify-content: space-between;
+        }
+        .result-label {
+            font-weight: bold;
+            color: #495057;
+        }
+        .explanation-box {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 25px;
+            font-size: 0.9em;
+            border-left: 4px solid #007bff;
+        }
+        .explanation-box h4 {
+            margin-top: 0;
+            color: #343a40;
+        }
+        .explanation-box ul {
+            padding-left: 20px;
+            margin-bottom: 0;
+        }
+        .explanation-box li {
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Student Registration</h2>
+    
+    <!-- Results Display Area -->
+    <div id="resultsContainer">
+        <h3>✅ Registration Successful!</h3>
+        <p>Here are the validated results submitted by the client:</p>
+        <div id="resultsData"></div>
+        
+        <div class="explanation-box">
+            <h4>Validation Rules Applied:</h4>
+            <ul>
+                <li><strong>HTML5 Rules:</strong> <code>required</code>, <code>type="email"</code>, <code>type="url"</code>, <code>type="date"</code>, <code>pattern</code> (Phone & Student No), <code>minlength</code>, <code>min/max</code> (Age), <code>maxlength</code> (Zip). These are handled natively by the browser.</li>
+                <li><strong>JavaScript Rules:</strong> Checkbox minimum count (2), Password strength (Regex), Password matching, Date of Birth logic (must be in past/older than 16), and displaying custom inline error messages.</li>
+            </ul>
+            <p><em>Note: In a real application, this data would now be sent to a server via a POST request, and the server would validate it again before saving to a database.</em></p>
+        </div>
+        <button onclick="resetForm()" style="background-color: #6c757d;">Register Another Student</button>
+    </div>
+
+    <!-- Form starts here -->
+    <form id="registrationForm" novalidate>
+        
+        <!-- Field 1: Full Name (Text) -->
+        <div class="form-group">
+            <label for="fullName">1. Full Name</label>
+            <input type="text" id="fullName" name="fullName" minlength="3" autocomplete="fullName" required>
+            <div class="error-message" id="error-fullName">Please enter your full name (minimum 3 characters).</div>
+        </div>
+
+        <!-- Field 2: Email (Email) -->
+        <div class="form-group">
+            <label for="email">2. Institutional Email</label>
+            <input type="email" id="email" name="email" required>
+            <div class="error-message" id="error-email">Please enter a valid email address.</div>
+        </div>
+
+        <!-- Field 3: Phone (Tel/Pattern) -->
+        <div class="form-group">
+            <label for="phone">3. Telephone Number</label>
+            <input type="tel" id="phone" name="phone" pattern="^\d{10}$" required>
+            <div class="error-message" id="error-phone">Please enter a valid 10-digit phone number.</div>
+        </div>
+
+        <!-- Field 4: Student Number (Text/Pattern) -->
+        <div class="form-group">
+            <label for="studentNumber">4. Student Number</label>
+            <input type="text" id="studentNumber" name="studentNumber" pattern="^S\d{7}$" required>
+            <div class="error-message" id="error-studentNumber">Format must be 'S' followed by 7 digits (e.g., S1234567).</div>
+        </div>
+
+        <!-- Field 5: Date of Birth (Date) -->
+        <div class="form-group">
+            <label for="dob">5. Date of Birth</label>
+            <input type="date" id="dob" name="dob" required>
+            <div class="error-message" id="error-dob">You must be at least 16 years old.</div>
+        </div>
+
+        <!-- Field 6: Age (Number/min/max) -->
+        <div class="form-group">
+            <label for="age">6. Age</label>
+            <input type="number" id="age" name="age" min="16" max="100" required>
+            <div class="error-message" id="error-age">You must be between 16 and 100 years old.</div>
+        </div>
+
+        <!-- Field 7: Select Course (Select) -->
+        <div class="form-group">
+            <label for="course">7. Select Course</label>
+            <select id="course" name="course" required>
+                <option value="">-- Please Choose --</option>
+                <option value="Computer Science">Computer Science</option>
+                <option value="Information Technology">Information Technology</option>
+                <option value="Software Engineering">Software Engineering</option>
+                <option value="Data Science">Data Science</option>
+            </select>
+            <div class="error-message" id="error-course">Please select a course.</div>
+        </div>
+
+        <!-- Field 8: Enrollment Status (Radio) -->
+        <div class="form-group">
+            <label>8. Enrollment Status</label>
+            <div class="radio-group">
+                <label><input type="radio" name="enrollment" value="Full-Time" required> Full-Time</label>
+                <label><input type="radio" name="enrollment" value="Part-Time"> Part-Time</label>
+                <label><input type="radio" name="enrollment" value="Distance"> Distance Learning</label>
+            </div>
+            <div class="error-message" id="error-enrollment">Please select your enrollment status.</div>
+        </div>
+
+        <!-- Field 9: Modules (Checkboxes) -->
+        <div class="form-group">
+            <label>9. Modules of Interest (Select at least 2)</label>
+            <div class="checkbox-group">
+                <label><input type="checkbox" name="modules" value="Web Dev"> Web Dev</label>
+                <label><input type="checkbox" name="modules" value="Database"> Database</label>
+                <label><input type="checkbox" name="modules" value="Networking"> Networking</label>
+                <label><input type="checkbox" name="modules" value="AI"> AI</label>
+            </div>
+            <div class="error-message" id="error-modules">Please select at least two modules.</div>
+        </div>
+
+        <!-- Field 10: Password (Password) -->
+        <div class="form-group">
+            <label for="password">10. Password</label>
+            <input type="password" id="password" name="password" required>
+            <div class="error-message" id="error-password">Password must be 8+ chars, with 1 uppercase, 1 lowercase, and 1 number.</div>
+        </div>
+
+        <!-- Field 11: Confirm Password (Password) -->
+        <div class="form-group">
+            <label for="confirmPassword">11. Confirm Password</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" required>
+            <div class="error-message" id="error-confirmPassword">Passwords do not match.</div>
+        </div>
+
+        <!-- Field 12: Portfolio URL (URL) -->
+        <div class="form-group">
+            <label for="portfolio">12. Personal Portfolio/Website (Optional)</label>
+            <input type="url" id="portfolio" name="portfolio" placeholder="https://example.com">
+            <div class="error-message" id="error-portfolio">Please enter a valid URL (e.g., https://example.com).</div>
+        </div>
+
+        <!-- Field 13: Postal Code (Text/maxlength) -->
+        <div class="form-group">
+            <label for="zip">13. Postal Code</label>
+            <input type="text" id="zip" name="zip" maxlength="6" required>
+            <div class="error-message" id="error-zip">Postal code cannot exceed 6 characters.</div>
+        </div>
+
+        <!-- Field 14: Guardian Name (Text) -->
+        <div class="form-group">
+            <label for="guardian">14. Guardian/Parent Name</label>
+            <input type="text" id="guardian" name="guardian" required>
+            <div class="error-message" id="error-guardian">Please enter a guardian name.</div>
+        </div>
+
+        <!-- Field 15: Comments (Textarea) -->
+        <div class="form-group">
+            <label for="comments">15. Additional Comments (Optional)</label>
+            <textarea id="comments" name="comments" rows="3" placeholder="Any special requirements or notes..."></textarea>
+        </div>
+
+        <button type="submit" id="submitBtn">Register</button>
+    </form>
+</div>
+
+<script>
+    const form = document.getElementById('registrationForm');
+    const resultsContainer = document.getElementById('resultsContainer');
+    const resultsData = document.getElementById('resultsData');
+    
+    // Helper functions for errors
+    function showError(elementId, messageId) {
+        document.getElementById(elementId).classList.add('error-border');
+        document.getElementById(messageId).style.display = 'block';
+    }
+
+    function clearError(elementId, messageId) {
+        document.getElementById(elementId).classList.remove('error-border');
+        document.getElementById(messageId).style.display = 'none';
+    }
+
+    // Form Submission and Validation
+    form.addEventListener('submit', function(event) {
+        event.preventDefault(); 
+        let isValid = true;
+        let firstInvalidField = null;
+
+        // --- HTML5 Validations (Check all fields) ---
+        
+        // 1. Full Name
+        if (!form.fullName.checkValidity()) { showError('fullName', 'error-fullName'); isValid = false; if(!firstInvalidField) firstInvalidField = form.fullName; } 
+        else { clearError('fullName', 'error-fullName'); }
+
+        // 2. Email
+        if (!form.email.checkValidity()) { showError('email', 'error-email'); isValid = false; if(!firstInvalidField) firstInvalidField = form.email; } 
+        else { clearError('email', 'error-email'); }
+
+        // 3. Phone
+        if (!form.phone.checkValidity()) { showError('phone', 'error-phone'); isValid = false; if(!firstInvalidField) firstInvalidField = form.phone; } 
+        else { clearError('phone', 'error-phone'); }
+
+        // 4. Student Number
+        if (!form.studentNumber.checkValidity()) { showError('studentNumber', 'error-studentNumber'); isValid = false; if(!firstInvalidField) firstInvalidField = form.studentNumber; } 
+        else { clearError('studentNumber', 'error-studentNumber'); }
+
+        // 5. Date of Birth (Custom JS check: Must be in the past and at least 16 years ago)
+        const dobInput = form.dob.value;
+        const dobDate = new Date(dobInput);
+        const today = new Date();
+        const minAgeDate = new Date(today.getFullYear() - 16, today.getMonth(), today.getDate());
+        
+        if (!dobInput || dobDate > minAgeDate) {
+            showError('dob', 'error-dob');
+            isValid = false;
+            if(!firstInvalidField) firstInvalidField = form.dob;
+        } else {
+            clearError('dob', 'error-dob');
+        }
+
+        // 6. Age
+        if (!form.age.checkValidity()) { showError('age', 'error-age'); isValid = false; if(!firstInvalidField) firstInvalidField = form.age; } 
+        else { clearError('age', 'error-age'); }
+
+        // 7. Course
+        if (!form.course.checkValidity()) { showError('course', 'error-course'); isValid = false; if(!firstInvalidField) firstInvalidField = form.course; } 
+        else { clearError('course', 'error-course'); }
+
+        // 12. Portfolio URL (Optional, so only check if it has value)
+        if (form.portfolio.value !== "" && !form.portfolio.checkValidity()) {
+            showError('portfolio', 'error-portfolio'); isValid = false; if(!firstInvalidField) firstInvalidField = form.portfolio;
+        } else {
+            clearError('portfolio', 'error-portfolio');
+        }
+
+        // 13. Postal Code
+        if (!form.zip.checkValidity()) { showError('zip', 'error-zip'); isValid = false; if(!firstInvalidField) firstInvalidField = form.zip; } 
+        else { clearError('zip', 'error-zip'); }
+
+        // 14. Guardian Name
+        if (!form.guardian.checkValidity()) { showError('guardian', 'error-guardian'); isValid = false; if(!firstInvalidField) firstInvalidField = form.guardian; } 
+        else { clearError('guardian', 'error-guardian'); }
+
+
+        // --- JavaScript Specific Validations ---
+        
+        // 8. Radio Buttons
+        const enrollmentRadios = document.querySelectorAll('input[name="enrollment"]');
+        let radioChecked = Array.from(enrollmentRadios).some(radio => radio.checked);
+        if (!radioChecked) { 
+            document.getElementById('error-enrollment').style.display = 'block'; 
+            isValid = false; 
+            if(!firstInvalidField) firstInvalidField = enrollmentRadios[0]; 
+        } else { 
+            document.getElementById('error-enrollment').style.display = 'none'; 
+        }
+
+        // 9. Checkboxes (Min 2)
+        const moduleCheckboxes = document.querySelectorAll('input[name="modules"]:checked');
+        if (moduleCheckboxes.length < 2) {
+            document.getElementById('error-modules').style.display = 'block';
+            isValid = false;
+            if(!firstInvalidField) firstInvalidField = document.querySelector('input[name="modules"]');
+        } else {
+            document.getElementById('error-modules').style.display = 'none';
+        }
+
+        // 10. Password Strength
+        const password = form.password.value;
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+        if (!passwordRegex.test(password)) {
+            showError('password', 'error-password');
+            isValid = false;
+            if(!firstInvalidField) firstInvalidField = form.password;
+        } else {
+            clearError('password', 'error-password');
+        }
+
+        // 11. Password Match
+        const confirmPassword = form.confirmPassword.value;
+        if (password !== confirmPassword || confirmPassword === "") {
+            showError('confirmPassword', 'error-confirmPassword');
+            isValid = false;
+            if(!firstInvalidField) firstInvalidField = form.confirmPassword;
+        } else {
+            clearError('confirmPassword', 'error-confirmPassword');
+        }
+
+        // --- Display Results or Errors ---
+        if (isValid) {
+            displayResults();
+        } else {
+            if (firstInvalidField) firstInvalidField.focus();
+        }
+    });
+
+    // Function to extract data and display it on screen
+    function displayResults() {
+        form.style.display = 'none';
+        
+        // Gather Data
+        const fullName = form.fullName.value;
+        const email = form.email.value;
+        const phone = form.phone.value;
+        const studentNumber = form.studentNumber.value;
+        const dob = form.dob.value;
+        const age = form.age.value;
+        const course = form.course.value;
+        const enrollment = document.querySelector('input[name="enrollment"]:checked').value;
+        const modules = Array.from(document.querySelectorAll('input[name="modules"]:checked')).map(cb => cb.value).join(', ');
+        const portfolio = form.portfolio.value || "N/A";
+        const zip = form.zip.value;
+        const guardian = form.guardian.value;
+        const comments = form.comments.value || "None";
+
+        // Build HTML for results
+        resultsData.innerHTML = `
+            <div class="result-item"><span class="result-label">Full Name:</span> <span>${fullName}</span></div>
+            <div class="result-item"><span class="result-label">Email:</span> <span>${email}</span></div>
+            <div class="result-item"><span class="result-label">Phone:</span> <span>${phone}</span></div>
+            <div class="result-item"><span class="result-label">Student Number:</span> <span>${studentNumber}</span></div>
+            <div class="result-item"><span class="result-label">Date of Birth:</span> <span>${dob}</span></div>
+            <div class="result-item"><span class="result-label">Age:</span> <span>${age}</span></div>
+            <div class="result-item"><span class="result-label">Course:</span> <span>${course}</span></div>
+            <div class="result-item"><span class="result-label">Enrollment:</span> <span>${enrollment}</span></div>
+            <div class="result-item"><span class="result-label">Modules Selected:</span> <span>${modules}</span></div>
+            <div class="result-item"><span class="result-label">Portfolio URL:</span> <span>${portfolio}</span></div>
+            <div class="result-item"><span class="result-label">Postal Code:</span> <span>${zip}</span></div>
+            <div class="result-item"><span class="result-label">Guardian Name:</span> <span>${guardian}</span></div>
+            <div class="result-item"><span class="result-label">Comments:</span> <span>${comments}</span>
+        `;
+        resultsContainer.style.display = 'block';
+    }
+
+    function resetForm() {
+        form.reset();
+        form.style.display = 'block';
+        resultsContainer.style.display = 'none';
+    }
+</script>
+
+</body>
+</html>
+

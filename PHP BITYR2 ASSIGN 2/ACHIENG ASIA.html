@@ -1,0 +1,408 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Registration Form</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .container {
+            width: 650px;
+            max-width: 95%;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #aaa;
+        }
+
+        h1 {
+            text-align: center;
+            color: #003366;
+        }
+
+        label {
+            display: block;
+            margin-top: 12px;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+
+        input[type="radio"],
+        input[type="checkbox"] {
+            width: auto;
+        }
+
+        .error {
+            color: red;
+            font-size: 14px;
+            display: block;
+            margin-top: 3px;
+        }
+
+        .success {
+            color: green;
+            text-align: center;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        .gender,
+        .interests {
+            margin-top: 5px;
+        }
+
+        button {
+            padding: 10px 15px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #submitBtn {
+            background-color: #003366;
+            color: white;
+        }
+
+        #resetBtn {
+            background-color: #999;
+            color: white;
+            margin-left: 10px;
+        }
+
+        .password-btn {
+            background-color: #555;
+            color: white;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Student Registration Form</h1>
+
+    <form id="registrationForm">
+
+        <!-- Full Name -->
+        <label for="fullName">Full Name</label>
+        <input type="text" id="fullName" name="fullName"
+               minlength="3" maxlength="50" required>
+        <span class="error" id="fullNameError"></span>
+
+        <!-- Student Number -->
+        <label for="studentNumber">Student Number</label>
+        <input type="text" id="studentNumber" name="studentNumber"
+               pattern="[A-Za-z0-9]{6,15}" required>
+        <span class="error" id="studentNumberError"></span>
+
+        <!-- Institutional Email -->
+        <label for="email">Institutional Email</label>
+        <input type="email" id="email" name="email"
+               placeholder="student@busitema.ac.ug" required>
+        <span class="error" id="emailError"></span>
+
+        <!-- International Telephone -->
+        <label for="telephone">Telephone Number</label>
+        <input type="tel" id="telephone" name="telephone"
+               placeholder="+256701234567"
+               pattern="^\+[1-9][0-9]{7,14}$" required>
+        <span class="error" id="telephoneError"></span>
+
+        <!-- Age -->
+        <label for="age">Age</label>
+        <input type="number" id="age" name="age"
+               min="16" max="60" required>
+        <span class="error" id="ageError"></span>
+
+        <!-- Course -->
+        <label for="course">Course</label>
+        <select id="course" name="course" required>
+            <option value="">-- Select Course --</option>
+            <option value="BIT">Bachelor of Information Technology</option>
+            <option value="BCS">Bachelor of Computer Science</option>
+            <option value="BSE">Bachelor of Software Engineering</option>
+            <option value="BCE">Bachelor of Computer Engineering</option>
+        </select>
+        <span class="error" id="courseError"></span>
+
+        <!-- Year of Study -->
+        <label for="year">Year of Study</label>
+        <select id="year" name="year" required>
+            <option value="">-- Select Year --</option>
+            <option value="1">Year 1</option>
+            <option value="2">Year 2</option>
+            <option value="3">Year 3</option>
+            <option value="4">Year 4</option>
+        </select>
+        <span class="error" id="yearError"></span>
+
+        <!-- Gender -->
+        <label>Gender</label>
+        <div class="gender">
+            <input type="radio" id="male" name="gender" value="Male">
+            <label for="male" style="display:inline;">Male</label>
+
+            <input type="radio" id="female" name="gender" value="Female">
+            <label for="female" style="display:inline;">Female</label>
+        </div>
+        <span class="error" id="genderError"></span>
+
+        <!-- Areas of Interest -->
+        <label>Areas of Interest — Select at least two</label>
+        <div class="interests">
+            <input type="checkbox" name="interest" value="Programming">
+            Programming<br>
+
+            <input type="checkbox" name="interest" value="Networking">
+            Networking<br>
+
+            <input type="checkbox" name="interest" value="Database">
+            Database<br>
+
+            <input type="checkbox" name="interest" value="Web Development">
+            Web Development
+        </div>
+        <span class="error" id="interestError"></span>
+
+        <!-- Password -->
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password"
+               minlength="8" maxlength="30" required>
+
+        <button type="button" class="password-btn"
+                onclick="togglePassword('password', 'passwordToggle')">
+            <span id="passwordToggle">Show Password</span>
+        </button>
+        <span class="error" id="passwordError"></span>
+
+        <!-- Confirm Password -->
+        <label for="confirmPassword">Confirm Password</label>
+        <input type="password" id="confirmPassword"
+               name="confirmPassword" required>
+
+        <button type="button" class="password-btn"
+                onclick="togglePassword('confirmPassword', 'confirmPasswordToggle')">
+            <span id="confirmPasswordToggle">Show Password</span>
+        </button>
+        <span class="error" id="confirmPasswordError"></span>
+
+        <!-- Buttons -->
+        <button type="submit" id="submitBtn">Register</button>
+        <button type="reset" id="resetBtn">Reset</button>
+
+        <div id="successMessage" class="success"></div>
+
+    </form>
+</div>
+
+<script>
+
+    // GET FORM
+    const form = document.getElementById("registrationForm");
+
+    // SHOW / HIDE PASSWORD
+    function togglePassword(passwordId, buttonId) {
+
+        const passwordField = document.getElementById(passwordId);
+        const buttonText = document.getElementById(buttonId);
+
+        if (passwordField.type === "password") {
+            passwordField.type = "text";
+            buttonText.textContent = "Hide Password";
+        } else {
+            passwordField.type = "password";
+            buttonText.textContent = "Show Password";
+        }
+    }
+
+    // FORM SUBMISSION
+    form.addEventListener("submit", function(event) {
+
+        event.preventDefault();
+
+        // Clear previous error messages
+        document.querySelectorAll(".error").forEach(function(error) {
+            error.textContent = "";
+        });
+
+        document.getElementById("successMessage").textContent = "";
+
+        let valid = true;
+        let firstInvalidField = null;
+
+        // FULL NAME
+        const fullName = document.getElementById("fullName");
+
+        if (fullName.value.trim() === "") {
+            document.getElementById("fullNameError").textContent =
+                "Full name is required.";
+            valid = false;
+            firstInvalidField = firstInvalidField || fullName;
+
+        } else if (fullName.value.trim().length < 3) {
+            document.getElementById("fullNameError").textContent =
+                "Name must contain at least 3 characters.";
+            valid = false;
+            firstInvalidField = firstInvalidField || fullName;
+        }
+
+        // STUDENT NUMBER
+        const studentNumber = document.getElementById("studentNumber");
+
+        if (!studentNumber.checkValidity()) {
+            document.getElementById("studentNumberError").textContent =
+                "Student number must contain 6–15 letters or numbers.";
+            valid = false;
+            firstInvalidField = firstInvalidField || studentNumber;
+        }
+
+        // EMAIL
+        const email = document.getElementById("email");
+
+        if (!email.checkValidity()) {
+            document.getElementById("emailError").textContent =
+                "Enter a valid email address.";
+            valid = false;
+            firstInvalidField = firstInvalidField || email;
+        }
+
+        // TELEPHONE
+        const telephone = document.getElementById("telephone");
+
+        if (!telephone.checkValidity()) {
+            document.getElementById("telephoneError").textContent =
+                "Enter a valid international number, e.g. +256701234567.";
+            valid = false;
+            firstInvalidField = firstInvalidField || telephone;
+        }
+
+        // AGE
+        const age = document.getElementById("age");
+
+        if (!age.checkValidity()) {
+            document.getElementById("ageError").textContent =
+                "Age must be between 16 and 60.";
+            valid = false;
+            firstInvalidField = firstInvalidField || age;
+        }
+
+        // COURSE
+        const course = document.getElementById("course");
+
+        if (course.value === "") {
+            document.getElementById("courseError").textContent =
+                "Please select a course.";
+            valid = false;
+            firstInvalidField = firstInvalidField || course;
+        }
+
+        // YEAR
+        const year = document.getElementById("year");
+
+        if (year.value === "") {
+            document.getElementById("yearError").textContent =
+                "Please select your year of study.";
+            valid = false;
+            firstInvalidField = firstInvalidField || year;
+        }
+
+        // GENDER
+        const gender = document.querySelector(
+            'input[name="gender"]:checked'
+        );
+
+        if (!gender) {
+            document.getElementById("genderError").textContent =
+                "Please select your gender.";
+            valid = false;
+            firstInvalidField =
+                firstInvalidField || document.getElementById("male");
+        }
+
+        // CHECKBOXES
+        const interests = document.querySelectorAll(
+            'input[name="interest"]:checked'
+        );
+
+        if (interests.length < 2) {
+            document.getElementById("interestError").textContent =
+                "Please select at least two areas of interest.";
+            valid = false;
+            firstInvalidField =
+                firstInvalidField ||
+                document.querySelector('input[name="interest"]');
+        }
+
+        // PASSWORD
+        const password = document.getElementById("password");
+
+        const strongPassword =
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+
+        if (!strongPassword.test(password.value)) {
+            document.getElementById("passwordError").textContent =
+                "Password must have at least 8 characters, an uppercase letter, a lowercase letter and a number.";
+            valid = false;
+            firstInvalidField = firstInvalidField || password;
+        }
+
+        // CONFIRM PASSWORD
+        const confirmPassword =
+            document.getElementById("confirmPassword");
+
+        if (password.value !== confirmPassword.value) {
+            document.getElementById("confirmPasswordError").textContent =
+                "Passwords do not match.";
+            valid = false;
+            firstInvalidField =
+                firstInvalidField || confirmPassword;
+        }
+
+        // FINAL RESULT
+        if (!valid) {
+            firstInvalidField.focus();
+        } else {
+            document.getElementById("successMessage").textContent =
+                "Registration successful! All fields passed validation.";
+        }
+    });
+
+    // RESET FORM
+    form.addEventListener("reset", function() {
+
+        document.querySelectorAll(".error").forEach(function(error) {
+            error.textContent = "";
+        });
+
+        document.getElementById("successMessage").textContent = "";
+
+        document.getElementById("passwordToggle").textContent =
+            "Show Password";
+
+        document.getElementById("confirmPasswordToggle").textContent =
+            "Show Password";
+    });
+
+</script>
+
+</body>
+</html>

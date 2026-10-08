@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Student Registration Form</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>Academic Registration Form</h2>
+
+  <!-- novalidate: the browser's default popups are turned off so script.js can show
+       inline messages. The HTML5 rules below are still evaluated by the browser
+       (through the Constraint Validation API) and are used by script.js. -->
+  <form id="regForm" action="register.php" method="POST" novalidate>
+
+    <div id="successMsg" class="success" role="status" hidden>
+      &#10003; All fields are valid. Submitting your registration...
+    </div>
+
+    <!-- HTML5: required + pattern (exactly 8 digits) -->
+    <div class="form-group">
+      <label for="studentNumber">Student ID Number:</label>
+      <input type="text" id="studentNumber" name="student_number" data-label="Student ID"
+             pattern="[0-9]{8}" title="Student ID must be exactly 8 digits." inputmode="numeric" required>
+      <span class="error" id="studentNumber-error" aria-live="polite"></span>
+    </div>
+
+    <!-- HTML5: required + minlength/maxlength -->
+    <div class="form-group">
+      <label for="firstName">First Name:</label>
+      <input type="text" id="firstName" name="first_name" data-label="First name"
+             minlength="2" maxlength="30" required>
+      <span class="error" id="firstName-error" aria-live="polite"></span>
+    </div>
+
+    <div class="form-group">
+      <label for="lastName">Last Name:</label>
+      <input type="text" id="lastName" name="last_name" data-label="Last name"
+             minlength="2" maxlength="30" required>
+      <span class="error" id="lastName-error" aria-live="polite"></span>
+    </div>
+
+    <!-- HTML5: type="email" -->
+    <div class="form-group">
+      <label for="email">Institutional Email Address:</label>
+      <input type="email" id="email" name="email" data-label="Email" autocomplete="email" required>
+      <span class="error" id="email-error" aria-live="polite"></span>
+    </div>
+
+    <!-- HTML5: pattern (starts with 07, 10 digits) -->
+    <div class="form-group">
+      <label for="phone">Telephone Number (Format: 0712345678):</label>
+      <input type="tel" id="phone" name="telephone" data-label="Telephone"
+             pattern="07[0-9]{8}" title="Phone number must start with 07 and be 10 digits long."
+             autocomplete="tel" required>
+      <span class="error" id="phone-error" aria-live="polite"></span>
+    </div>
+
+    <!-- HTML5: min / max -->
+    <div class="form-group">
+      <label for="age">Age (Must be between 16 and 100):</label>
+      <input type="number" id="age" name="age" data-label="Age" min="16" max="100" required>
+      <span class="error" id="age-error" aria-live="polite"></span>
+    </div>
+
+    <!-- HTML5: required radio group -->
+    <fieldset class="form-group" id="gender">
+      <legend>Gender:</legend>
+      <div class="radio-group">
+        <input type="radio" id="genderMale" name="gender" value="male" required>
+        <label for="genderMale">Male</label>
+        <input type="radio" id="genderFemale" name="gender" value="female">
+        <label for="genderFemale">Female</label>
+        <input type="radio" id="genderOther" name="gender" value="other">
+        <label for="genderOther">Other</label>
+      </div>
+      <span class="error" id="gender-error" aria-live="polite"></span>
+    </fieldset>
+
+    <!-- HTML5: required select -->
+    <div class="form-group">
+      <label for="program">Academic Program:</label>
+      <select id="program" name="academic_program" data-label="Academic program" required>
+        <option value="" disabled selected>-- Select a Program --</option>
+        <option value="cs">Bachelor of Computer Science</option>
+        <option value="it">Bachelor of Information Technology</option>
+        <option value="se">Bachelor of Software Engineering</option>
+      </select>
+      <span class="error" id="program-error" aria-live="polite"></span>
+    </div>
+
+    <!-- HTML5: date min/max (2026 only) -->
+    <div class="form-group">
+      <label for="restrictedDate">Appointment Date (2026 Only):</label>
+      <input type="date" id="restrictedDate" name="appointment_date" data-label="Appointment date"
+             data-range-msg="Appointment date must be within 2026."
+             min="2026-01-01" max="2026-12-31" required>
+      <span class="error" id="restrictedDate-error" aria-live="polite"></span>
+    </div>
+
+    <!-- JavaScript: at least two checkboxes -->
+    <fieldset class="form-group" id="interests">
+      <legend>Interests (select at least two):</legend>
+      <div class="radio-group">
+        <input type="checkbox" id="intProg" name="interests[]" value="programming">
+        <label for="intProg">Programming</label>
+        <input type="checkbox" id="intNet" name="interests[]" value="networking">
+        <label for="intNet">Networking</label>
+        <input type="checkbox" id="intData" name="interests[]" value="data">
+        <label for="intData">Data Science</label>
+        <input type="checkbox" id="intSec" name="interests[]" value="security">
+        <label for="intSec">Security</label>
+      </div>
+      <span class="error" id="interests-error" aria-live="polite"></span>
+    </fieldset>
+
+    <!-- JavaScript: password strength -->
+    <div class="form-group">
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" data-label="Password"
+             minlength="8" autocomplete="new-password" required>
+      <small>At least 8 characters with uppercase, lowercase, a number and a special character.</small>
+      <div id="strength" class="strength"></div>
+      <span class="error" id="password-error" aria-live="polite"></span>
+    </div>
+
+    <!-- JavaScript: passwords must match -->
+    <div class="form-group">
+      <label for="confirmPassword">Confirm Password:</label>
+      <input type="password" id="confirmPassword" name="confirm_password" data-label="Confirm password"
+             autocomplete="new-password" required>
+      <span class="error" id="confirmPassword-error" aria-live="polite"></span>
+    </div>
+
+    <button type="submit">Submit Registration</button>
+  </form>
+
+  <script src="script.js"></script>
+</body>
+</html>
